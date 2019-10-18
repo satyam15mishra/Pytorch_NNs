@@ -5,6 +5,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn 
 import torch.nn.functional as F
+import torch.optim as optim
 
 #DATA PREPROCESSING
 train_data = pd.read_csv('mnist_train_array.csv')
@@ -49,6 +50,22 @@ class Net(nn.Module):
 		return  F.log_softmax(x, dim = 1)
 
 net = Net()
-X = torch.rand((28, 28))
-X = X.view(-1, 28*28)
-output = net(X)
+#feeding a random input
+X_sample = torch.rand((28, 28))
+X_sample = X_sample.view(-1, 28*28)
+print output = net(X_sample)
+
+#TRAINING THE NETWORK
+optimizer = optim.Adam(net.parameters(), lr = 0.001)
+EPOCHS = 5
+
+for epoch in range(EPOCHS):
+	for data in train_batch:
+		X, y = train_batch, label_batch
+		net.zero_grad()
+		output = net(X.view(-1, 28*28))
+		#this loss because the label is just a scalar otherwise we would've used MSE
+		loss = F.nll_loss(output, y)
+		loss.backward() #backprop
+		optimizer.step() #adjust the weights for us
+	print loss
