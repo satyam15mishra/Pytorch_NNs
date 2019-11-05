@@ -43,8 +43,19 @@ y_train = torch.from_numpy(np.asarray(y_train))
 y_test = torch.from_numpy(np.asarray(y_test))
 
 # network architecture
-# class MyNet(torch.NN.Module):
-# 	def __init__(self):
-# 		super(MyNet, self).__init__()
-# 	self.fc1 = torch.nn.Linear()
-# 	self.fc2 =  torch.nn.Linear()
+class MyNet(torch.NN.Module):
+	def __init__(self):
+		super(MyNet, self).__init__()
+	self.fc1 = torch.nn.Linear(3, 32)
+	self.fc2 =  torch.nn.Linear(32, 16)
+	self.fc3 = torch.nn.Linear(16, 8)
+	self.fc4 = torch.nn.Linear(8, 1)
+
+	def forward(self, x):
+		x = torch.sigmoid(self.fc1(x))
+		x = torch.sigmoid(self.fc2(x))
+		x = torch.ReLU(self.fc3(x))
+		x = torch.sigmoid(self.fc4(x))
+
+network = MyNet()
+print network
