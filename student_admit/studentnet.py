@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 import matplotlib.pyplot as plt 
 import torch
+from torch import nn
 
 data = pd.read_csv('studentdata.csv')
 X = data.iloc[:,[1,2,3]]
@@ -43,13 +44,14 @@ y_train = torch.from_numpy(np.asarray(y_train))
 y_test = torch.from_numpy(np.asarray(y_test))
 
 # network architecture
-class MyNet(torch.NN.Module):
+class MyNet(nn.Module):
+	
 	def __init__(self):
 		super(MyNet, self).__init__()
-	self.fc1 = torch.nn.Linear(3, 32)
-	self.fc2 =  torch.nn.Linear(32, 16)
-	self.fc3 = torch.nn.Linear(16, 8)
-	self.fc4 = torch.nn.Linear(8, 1)
+		self.fc1 = torch.nn.Linear(3, 32)
+		self.fc2 =  torch.nn.Linear(32, 16)
+		self.fc3 = torch.nn.Linear(16, 8)
+		self.fc4 = torch.nn.Linear(8, 1)
 
 	def forward(self, x):
 		x = torch.sigmoid(self.fc1(x))
