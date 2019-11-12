@@ -42,13 +42,17 @@ X_train = torch.from_numpy(np.asarray(X_train))
 X_test = torch.from_numpy(np.asarray(X_test))
 y_train = torch.from_numpy(np.asarray(y_train))
 y_test = torch.from_numpy(np.asarray(y_test))
+X_train = X_train.float()
+X_test = X_test.float()
+y_train = y_train.float()
+y_test = y_test.float()
 
 # network architecture
 class MyNet(nn.Module):
-	
+
 	def __init__(self):
 		super(MyNet, self).__init__()
-		self.fc1 = torch.nn.Linear(3, 32)
+		self.fc1 = torch.nn.Linear(6, 32)
 		self.fc2 =  torch.nn.Linear(32, 16)
 		self.fc3 = torch.nn.Linear(16, 8)
 		self.fc4 = torch.nn.Linear(8, 1)
@@ -56,8 +60,21 @@ class MyNet(nn.Module):
 	def forward(self, x):
 		x = torch.sigmoid(self.fc1(x))
 		x = torch.sigmoid(self.fc2(x))
-		x = torch.ReLU(self.fc3(x))
+		x = torch.sigmoid(self.fc3(x))
 		x = torch.sigmoid(self.fc4(x))
+		return x
 
 network = MyNet()
-print network
+out = network(X_train)
+
+import torch.optim as optim
+optimizer = optim.SGD(MyNet().parameters(), lr=0.01)
+criterion = torch.nn.MSELoss()
+optimizer.zero_grad()   # zero the gradient buffers
+loss = criterion(out, y_train)
+
+#backpropogation to minimize loss
+loss.backward()
+optimizer.step()
+
+print 'Mean squared error or loss = ', loss
