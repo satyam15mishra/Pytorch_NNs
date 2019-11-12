@@ -58,10 +58,10 @@ class MyNet(nn.Module):
 		self.fc4 = torch.nn.Linear(8, 1)
 
 	def forward(self, x):
-		x = torch.sigmoid(self.fc1(x))
-		x = torch.sigmoid(self.fc2(x))
+		x = torch.relu(self.fc1(x))
+		x = torch.tanh(self.fc2(x))
 		x = torch.sigmoid(self.fc3(x))
-		x = torch.sigmoid(self.fc4(x))
+		x = torch.sigmoid(self.fc4(x)) #sigmoid because of binary classification
 		return x
 
 network = MyNet()
